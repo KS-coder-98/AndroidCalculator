@@ -569,6 +569,4 @@ public class CalculateTest {
             assertEquals(i + ".0", calculate.getStringExpression());
         }
     }
-
-
 }

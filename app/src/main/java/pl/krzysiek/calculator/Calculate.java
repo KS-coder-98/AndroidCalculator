@@ -18,7 +18,7 @@ public class Calculate {
     private String stringExpression;
     Expression expression;
     private List<String> digits = new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "-", "+", "*", "/", "cos", "sin", "tan", "tn", "ln", "log", "sqrt"));
-    private List<String> digits1 = new ArrayList<>(Arrays.asList("0","1", "2", "3", "4", "5", "6", "7", "8", "9"));
+    private List<String> digits1 = new ArrayList<>(Arrays.asList("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"));
     private List<String> mathOperations = new ArrayList<>(Arrays.asList("sin", "cos", "ln", "log", "tan", "sqrt"));
 
     Function logb = new Function("logb", 2) {
@@ -32,18 +32,18 @@ public class Calculate {
         stringExpression = "0";
     }
 
-    String changeLnToLogB(String input){
+    String changeLnToLogB(String input) {
         int index = 0;
-        do{
+        do {
             index = input.indexOf("ln(");
-            if ( index == -1 )
+            if (index == -1)
                 break;
             String exe = ", " + String.valueOf(Math.exp(1)) + ")";
             String temp = input.substring(0, index);
             input = input.substring(index).replaceFirst("\\)", exe);
             String first = input.replaceFirst("ln\\(", "logb(");
             input = temp + first;
-        }while (index != -1);
+        } while (index != -1);
         return input;
     }
 
@@ -64,10 +64,21 @@ public class Calculate {
             stringExpression = "0";
         } else if (sign.equals("=")) {
             addEqual();
+        } else if (sign.equals(".")) {
+            addDot();
         } else {
             stringExpression += sign;
         }
         return true;
+    }
+
+    private void addDot() {
+        int indexSign = lastIndexOfSign();
+        String temp = stringExpression;
+        if (indexSign != -1)
+            temp = stringExpression.substring(indexSign);
+        if (!temp.contains("."))
+            stringExpression += ".";
     }
 
     private boolean addPlusMines() {
@@ -119,7 +130,7 @@ public class Calculate {
         int maxIndex = lastIndexOfSign();
         if (maxIndex != -1) {
             stringExpression = stringExpression.substring(0, maxIndex + 1);
-            if ( stringExpression.length() == 1 )
+            if (stringExpression.length() == 1)
                 stringExpression = "0";
         } else
             stringExpression = "0";

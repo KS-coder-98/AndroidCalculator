@@ -332,4 +332,40 @@ public class CalculateTest {
         assertEquals("2*logb(2, 2.718281828459045)+3*logb(2+3, 2.718281828459045)+5", res);
     }
 
+    @Test
+    public void testDot(){
+        calculate.addSign("3");
+        calculate.addSign(".");
+        calculate.addSign("2");
+        calculate.addSign(".");
+        calculate.addSign("2");
+
+        assertEquals("3.22", calculate.getStringExpression());
+    }
+
+    @Test
+    public void testDot_v1(){
+        calculate.addSign("3");
+        calculate.addSign(".");
+        calculate.addSign("2");
+        calculate.addSign("+");
+        calculate.addSign("2");
+        calculate.addSign(".");
+        calculate.addSign("2");
+        assertEquals("3.2+2.2", calculate.getStringExpression());
+    }
+
+    @Test
+    public void testDot_v2(){
+        calculate.addSign("3");
+        calculate.addSign(".");
+        calculate.addSign("2");
+        calculate.addSign("+");
+        calculate.addSign("2");
+        calculate.addSign(".");
+        calculate.addSign(".");
+        calculate.addSign("2");
+        assertEquals("3.2+2.2", calculate.getStringExpression());
+    }
+
 }

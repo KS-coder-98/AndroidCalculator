@@ -143,6 +143,9 @@ public class Calculate {
                     .function(logb)
                     .build();
             double res = expression.evaluate();
+            if (Double.isNaN(res)){
+                stringExpression = "ERROR";
+            }
             setStringExpression(String.valueOf(res));
         } catch (Exception e) {
             stringExpression = "ERROR";

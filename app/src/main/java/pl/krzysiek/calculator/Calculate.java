@@ -4,6 +4,7 @@ import net.objecthunter.exp4j.Expression;
 import net.objecthunter.exp4j.ExpressionBuilder;
 import net.objecthunter.exp4j.function.Function;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -38,7 +39,7 @@ public class Calculate {
             index = input.indexOf("ln(");
             if (index == -1)
                 break;
-            String exe = ", " + String.valueOf(Math.exp(1)) + ")";
+            String exe = ", " + Math.exp(1) + ")";
             String temp = input.substring(0, index);
             input = input.substring(index).replaceFirst("\\)", exe);
             String first = input.replaceFirst("ln\\(", "logb(");
@@ -143,10 +144,11 @@ public class Calculate {
                     .function(logb)
                     .build();
             double res = expression.evaluate();
-            if (Double.isNaN(res)){
+            if (Double.isNaN(res)) {
                 stringExpression = "ERROR";
             }
-            setStringExpression(String.valueOf(res));
+            String temp = calculateEpsilon(String.valueOf(res));
+            setStringExpression(String.valueOf(temp));
         } catch (Exception e) {
             stringExpression = "ERROR";
         }
@@ -159,5 +161,16 @@ public class Calculate {
         int lastMul = stringExpression.lastIndexOf("*");
         List<Integer> indexOfTheLastSign = new ArrayList<>(Arrays.asList(lastMinus, lastMul, lastPlus, lastSub));
         return Collections.max(indexOfTheLastSign);
+    }
+
+    public String calculateEpsilon(String s) {
+        BigDecimal numberCalculated = new BigDecimal(s);
+        double test = Math.rint(Double.parseDouble(s));
+        BigDecimal abs = (numberCalculated.subtract(BigDecimal.valueOf(test))).abs();
+        BigDecimal epsilon = new BigDecimal("0.00000001");
+        if ( abs.compareTo(epsilon) == -1){
+            return String.valueOf(test);
+        }
+        return s;
     }
 }
